@@ -11,7 +11,7 @@
                 <img class="img-fluid" style="max-width: 100px; " src={{post.img.url}} alt="">
             </div>
             <div class="details">
-                <a href="blog-single.html"><h6>{{post.title|truncatewords:3}}</h6></a>
+                <a href="{% url 'blog:detail' post.slug %}"><h6>{{post.title|truncatewords:3}}</h6></a>
                 <p>{{post.published_date|naturaltime}}</p>
             </div>
         </div>

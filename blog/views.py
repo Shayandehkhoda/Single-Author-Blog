@@ -1,10 +1,14 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post, Category
 from django.db.models import F
+from django.core.paginator import Paginator
 
 
-def home(request):
+def home(request, pnum=1):
     posts = Post.objects.select_related('author').filter(is_published=True)
+    paginator = Paginator(posts, 2)
+    page_number = pnum
+    posts = paginator.get_page(page_number)
     return render(request, 'blog/home.html', {'posts': posts})
 
 
@@ -28,5 +32,8 @@ def search(request):
     query = request.GET.get('q', None)
     if query:
         posts = Post.objects.filter(content__icontains=query)
+        paginator = Paginator(posts, 2)
+        page_number = request.GET.get('page')
+        posts = paginator.get_page(page_number)
         return render(request, 'blog/home.html', {'posts': posts})
     return redirect('blog:home')
