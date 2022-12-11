@@ -12,4 +12,4 @@ def contact_view(request):
         else:
             messages.error(request, 'Ticket didnt submit.')
     form = ContactForm()
-    return render(request, 'blog/contact.html')
+    return render(request, 'blog/contact.html', {'form': form})
