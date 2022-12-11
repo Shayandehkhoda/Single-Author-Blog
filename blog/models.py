@@ -51,3 +51,10 @@ class Category(models.Model):
 
     class Meta:
         verbose_name_plural = "categories"
+
+
+class Newsletter(models.Model):
+    email = models.EmailField(unique=True)
+
+    def __str__(self):
+        return self.email

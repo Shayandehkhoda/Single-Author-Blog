@@ -1,7 +1,9 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, HttpResponseRedirect
 from .models import Post, Category
 from django.db.models import F
 from django.core.paginator import Paginator
+from .forms import NewsletterForm
+from django.contrib import messages
 
 
 def home(request, pnum=1):
@@ -37,3 +39,12 @@ def search(request):
         posts = paginator.get_page(page_number)
         return render(request, 'blog/home.html', {'posts': posts})
     return redirect('blog:home')
+
+
+def newsletter(request):
+    if request.method == 'POST':
+        form = NewsletterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Subscribed successfully.')
+    return HttpResponseRedirect('/')

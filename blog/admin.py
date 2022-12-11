@@ -1,5 +1,5 @@
 from django.contrib import admin, messages
-from .models import Post, Category
+from .models import Post, Category, Newsletter
 
 
 @admin.register(Post)
@@ -19,3 +19,8 @@ class PostAdmin(admin.ModelAdmin):
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
+
+
+@admin.register(Newsletter)
+class NewsletterAdmin(admin.ModelAdmin):
+    pass

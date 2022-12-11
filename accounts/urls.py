@@ -3,6 +3,5 @@ from .views import contact_view
 
 app_name = 'accounts'
 urlpatterns = [
-    path('contact/', contact_view, name='contact')
-
+    path('contact/', contact_view, name='contact'),
 ]

@@ -10,6 +10,6 @@ def contact_view(request):
             form.save()
             messages.success(request, 'Ticket submitted successfully.')
         else:
-            messages.ERROR(request, 'Ticket didnt submit.')
+            messages.error(request, 'Ticket didnt submit.')
     form = ContactForm()
     return render(request, 'blog/contact.html')
