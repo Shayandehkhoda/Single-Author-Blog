@@ -67,3 +67,6 @@ def newsletter(request):
             form.save()
             messages.success(request, 'Subscribed successfully.')
     return HttpResponseRedirect('/')
+
+def about(request):
+    return render(request, 'blog/about.html')
