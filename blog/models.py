@@ -1,12 +1,13 @@
 from django.db import models
 from accounts.models import User
 from django.utils.html import format_html
+from ckeditor.fields import RichTextField
 
 
 class Post(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=50)
-    content = models.TextField()
+    content = RichTextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     img = models.ImageField(upload_to='posts/%Y/%m/%d/', null=True)
     category = models.ManyToManyField('Category', related_name='posts')
@@ -78,7 +79,7 @@ class Comment(models.Model):
     name = models.CharField(max_length=255)
     email = models.EmailField()
     subject = models.CharField(max_length=255)
-    message = models.TextField()
+    message = RichTextField()
     approved = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

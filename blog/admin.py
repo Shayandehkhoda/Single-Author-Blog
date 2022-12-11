@@ -1,7 +1,6 @@
 from django.contrib import admin, messages
 from .models import Post, Category, Newsletter, Comment
 
-
 class CommentInline(admin.TabularInline):
     model = Comment
 
