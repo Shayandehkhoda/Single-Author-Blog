@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect, HttpResponseRe
 from .models import Post, Category
 from django.db.models import F
 from django.core.paginator import Paginator
-from .forms import NewsletterForm
+from .forms import NewsletterForm, CommentForm
 from django.contrib import messages
 
 
@@ -15,13 +15,32 @@ def home(request, pnum=1):
 
 
 def detail(request, slug):
+
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Comment added, will be approved soon.')
+        else:
+            messages.error(request, 'Please fill the form correctly.')
+        return redirect('blog:detail', slug=slug)
+
+    #Page view count
     post = get_object_or_404(
-        Post.objects.select_related('author',), slug=slug, is_published=True
-    )
+                Post.objects.select_related('author',), slug=slug, is_published=True
+                )
     post.counted_views = F('counted_views') + 1
     post.save()
     post.refresh_from_db()
-    return render(request, 'blog/detail.html', {'post': post})
+
+    #Comments form & count
+    comments = post.comments.all()
+    form = CommentForm()
+    context = {'post': post,
+            'comments': comments.filter(approved=True),
+            'form': form
+            }
+    return render(request, 'blog/detail.html', context)
 
 
 def category_posts(request, slug):

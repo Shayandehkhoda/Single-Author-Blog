@@ -1,5 +1,5 @@
 from django.contrib import admin, messages
-from .models import Post, Category, Newsletter
+from .models import Post, Category, Newsletter, Comment
 
 
 @admin.register(Post)
@@ -24,3 +24,15 @@ class CategoryAdmin(admin.ModelAdmin):
 @admin.register(Newsletter)
 class NewsletterAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    
+    actions = ('approve_comment',)
+
+    def approve_comment(self, request, queryset):
+        updated = queryset.update(approved=True)
+        self.message_user(request, f"{updated} comment approved", messages.SUCCESS)
+
+    approve_comment.short_description = 'Approve selected comments'
