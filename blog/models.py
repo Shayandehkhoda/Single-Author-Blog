@@ -1,5 +1,6 @@
 from django.db import models
 from accounts.models import User
+from django.utils.html import format_html
 
 
 class Post(models.Model):
@@ -34,6 +35,18 @@ class Post(models.Model):
             previous = None
         finally:
             return previous
+
+    def thumbnail(self):
+        return format_html(f"<img width=100 height=45 style='border-radius: 5px;' src='{self.img.url}'>")
+
+    def category_str(self):
+        category_list = [str(cat) for cat in self.category.all()]
+        return ",".join(category_list)
+    category_str.short_description = 'Categories'
+
+    def trunc_title(self):
+        return self.title[:30] + ' ...'
+    trunc_title.short_description = 'Title'
 
     def __str__(self):
         return self.title

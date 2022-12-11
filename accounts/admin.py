@@ -10,4 +10,7 @@ class UserAdmin(DefaultUserAdmin):
 
 @admin.register(Contact)
 class ContactAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('name', 'email', 'subject', 'created_date', )
+    list_filter = ('created_date', 'email', )
+    search_fields = ('subject', 'content')
+    sortable_by = ('created_date', 'email', )

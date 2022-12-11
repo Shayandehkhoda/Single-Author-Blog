@@ -9,6 +9,7 @@ Will be completed.<br>
 - Contact Section
 - RSS feed Section
 - About Section
+- Captcha
 <br>
 <br>
 <br>

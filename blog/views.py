@@ -8,7 +8,7 @@ from django.contrib import messages
 
 def home(request, pnum=1):
     posts = Post.objects.select_related('author').filter(is_published=True)
-    paginator = Paginator(posts, 2)
+    paginator = Paginator(posts, 3)
     page_number = pnum
     posts = paginator.get_page(page_number)
     return render(request, 'blog/home.html', {'posts': posts})
