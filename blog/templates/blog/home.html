@@ -9,7 +9,7 @@
 			<div class="row d-flex align-items-center justify-content-center">
 				<div class="about-content blog-header-content col-lg-12">
 					<h1 class="text-white">
-						Welcome to My Django Blog
+						Welcome to My Django Blog <br> {% if request.user.get_short_name %}{{request.user.get_short_name}}{% endif %}
 					</h1>	
 					<p class="text-white">
 						Here you can find everything about Python, Django and all needed to become a Backend-Developer
