@@ -39,12 +39,24 @@
 								<p class="date col-lg-12 col-md-12 col-6"><a href="#">{{post.published_date|date:"d M Y"}}</a> <span class="lnr lnr-calendar-full"></span></p>
 								<p class="view col-lg-12 col-md-12 col-6"><a href="#">{{post.counted_views}} Views</a> <span class="lnr lnr-eye"></span></p>
 								<p class="comments col-lg-12 col-md-12 col-6"><a href="#">{{comments.count}} Comments</a> <span class="lnr lnr-bubble"></span></p>
+								{% if post.special %}
+								<p class="comments col-lg-12 col-md-12 col-6"><a href="#">Special Post</a> <span class="lnr lnr-star"></span></p>						
+								{% endif %}
 							</div>
 						</div>
 						<div class="col-lg-9 col-md-9">
 							<h3 class="mt-20 mb-20">{{post.title}}</h3>
+							{% if post.special %}
+								{% if request.user.is_authenticated %}
+								<p class="excert">
+								{{post.content|safe|linebreaks}}
+								{% else %}
+								<p> This Post is special. Please <a href="{% url 'accounts:login' %}">Login</a> first. </p>
+								{% endif %}
+							{% else %}
 							<p class="excert">
-								{{post.content|linebreaks}}
+								{{post.content|safe|linebreaks}}
+							{% endif %}
 							</p>
 						</div>
 					</div>
@@ -81,6 +93,7 @@
 						</div>
 					</div>
 					<div class="comments-area">
+						{% if post.special and request.user.is_authenticated or not post.special %}
 						<h4>{{comments.count}} Comments</h4>
 						<div class="comment-list">
 							{% for cm in comments %}
@@ -107,7 +120,8 @@
 					<div class="comment-form">
 						<h4>Leave a Comment</h4>
 						{% include 'blog/messages.html' %}
-						<form method="post" action="{% url 'blog:detail' post.slug %}"> {% csrf_token %}
+						<form method="post" > {% csrf_token %}
+							{% if not request.user.is_authenticated %}
 							<div class="form-group form-inline">
 								<input type="hidden" name="post" value="{{post.id}}">
 								<div class="form-group col-lg-6 col-md-12 name">
@@ -115,8 +129,19 @@
 								</div>
 								<div class="form-group col-lg-6 col-md-12 email">
 								<input type="email" class="form-control" name="email" placeholder="Enter email address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter email address'">
-								</div>										
+								</div>
 							</div>
+							{% else %}
+							<div class="form-group form-inline">
+								<input type="hidden" name="post" value="{{post.id}}">
+								<div class="form-group col-lg-6 col-md-12 name">
+								<input type="hidden" class="form-control" name="name" value="{{request.user.get_full_name}}">
+								</div>
+								<div class="form-group col-lg-6 col-md-12 email">
+								<input type="hidden" class="form-control" name="email" value="{{request.user.email}}">
+								</div>
+							</div>
+							{% endif %}
 							<div class="form-group">
 								<input type="text" class="form-control" name="subject" placeholder="Subject" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Subject'">
 							</div>
@@ -126,6 +151,7 @@
 							</div>
 							<button type="submit" class="primary-btn text-uppercase">Post Comment</button>	
 						</form>
+							{% endif %}
 					</div>
 				</div>
 				<div class="col-lg-4 sidebar-widgets">

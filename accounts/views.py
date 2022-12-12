@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
-from .forms import ContactForm, LoginForm
+from .forms import ContactForm, LoginForm, SignupForm
 from django.contrib import messages
-from .models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+
 
 
 def contact_view(request):
@@ -18,22 +19,36 @@ def contact_view(request):
 
 
 def login_user(request):
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            cd = form.cleaned_data
-            user = authenticate(**cd)
-            if user:
-                login(request, user)
-                return redirect('blog:home')
-            messages.error(request, 'Wrong credentials')
-    form = LoginForm()
-    return render(request, 'accounts/login.html', {'form': form})
+    if not request.user.is_authenticated:
+        if request.method == 'POST':
+            form = LoginForm(request.POST)
+            if form.is_valid():
+                cd = form.cleaned_data
+                user = authenticate(**cd)
+                if user:
+                    login(request, user)
+                    return redirect('blog:home')
+                messages.error(request, 'Wrong credentials')
+        form = LoginForm()
+        return render(request, 'accounts/login.html', {'form': form})
+    return redirect('blog:home')
 
 
+@login_required(login_url='accounts:login')
 def logout_user(request):
-    return render(request, 'accounts/logout.html')
+    logout(request)
+    return redirect(request.META.get('HTTP_REFERER'))
 
 
 def signup_user(request):
-    return render(request, 'accounts/signup.html')
+    if not request.user.is_authenticated:
+        if request.method == 'POST':
+            form = SignupForm(request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Signup completed, please Login')
+                return redirect('accounts:login')
+            messages.error(request, 'Wrong Credentials')
+        form = SignupForm()
+        return render(request, 'accounts/signup.html', {'form': form})
+    return redirect('blog:home')

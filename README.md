@@ -10,6 +10,7 @@ Will be completed.<br>
 - RSS feed Section
 - About Section
 - Captcha
+- Special posts for logged in users
 <br>
 <br>
 <br>

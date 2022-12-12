@@ -17,17 +17,19 @@
 
   <body>
 
-<form class="box" action="{% url 'accounts:login' %}" method="post">{% csrf_token %}
+<form class="box" action="" method="post">{% csrf_token %}
 
   <h1>Login</h1>
-  <section style="color: red;" >{% include 'blog/messages.html' %}</section>
+  <p> {% include 'blog/messages.html' %} </p>
+  
   <input type="text" name="username" placeholder="Username">
 
   <input type="password" name="password" placeholder="Password">
   {{form.captcha}}
 
   <input type="submit" name="" value="Login">
-
+  <a href="{% url 'accounts:signup' %}">Dont have account?/Signup</a>
+  
 </form>
 
   </body>

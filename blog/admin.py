@@ -1,14 +1,14 @@
 from django.contrib import admin, messages
 from .models import Post, Category, Newsletter, Comment
 
-class CommentInline(admin.TabularInline):
+class CommentInline(admin.StackedInline):
     model = Comment
 
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('trunc_title', 'thumbnail', 'category_str', 'counted_views', 'is_published', 'published_date')
-    list_filter = ('is_published', 'published_date', )
+    list_display = ('trunc_title', 'thumbnail', 'category_str', 'counted_views', 'special', 'is_published', 'published_date')
+    list_filter = ('is_published', 'published_date', 'special')
     search_fields = ('title', 'content')
     sortable_by = ('is_published', 'counted_views', 'published_date',)
     prepopulated_fields = {'slug': ('title',)}

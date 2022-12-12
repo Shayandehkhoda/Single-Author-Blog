@@ -24,6 +24,7 @@
 	<section class="top-category-widget-area pt-90 pb-90 ">
 		<div class="container">
 		</div>	
+		<div style="text-align: center; width: 300px; margin: auto; background-color: #f9f9ff;">{% include 'blog/messages.html' %}</div>
 	</section>
 	<!-- End top-category-widget Area -->
 	
@@ -45,6 +46,9 @@
 								<p class="date col-lg-12 col-md-12 col-6"><a href="#">{{post.published_date|date:"d M Y"}}</a> <span class="lnr lnr-calendar-full"></span></p>
 								<p class="view col-lg-12 col-md-12 col-6"><a href="#">{{post.counted_views}} Views</a> <span class="lnr lnr-eye"></span></p>
 								<p class="comments col-lg-12 col-md-12 col-6"><a href="#">{{post.comments.count}} Comments</a> <span class="lnr lnr-bubble"></span></p>						
+								{% if post.special %}
+								<p class="comments col-lg-12 col-md-12 col-6"><a href="#">Special Post</a> <span class="lnr lnr-star"></span></p>						
+								{% endif %}
 							</div>
 						</div>
 						<div class="col-lg-9 col-md-9 ">
@@ -53,7 +57,7 @@
 							</div>
 							<a class="posts-title" href="{% url 'blog:detail' post.slug %}"><h3>{{post.title}}</h3></a>
 							<p class="excert">
-								{{post.content|truncatewords:40}}
+								{{post.content|truncatewords:40|safe}}
 							</p>
 							<a href="{% url 'blog:detail' post.slug %}" class="primary-btn">View More</a>
 						</div>
@@ -115,9 +119,7 @@
 		</div>	
 	</section>
 	<!-- End post-content Area -->
-	
 	{% include 'blog/footer.html' %}
 
 </body>
 </html>
-{% include 'blog/messages.html' %}

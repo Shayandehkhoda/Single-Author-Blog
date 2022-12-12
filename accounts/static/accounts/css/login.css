@@ -40,7 +40,7 @@ body{
 
 }
 
-.box input[type = "text"],.box input[type = "password"]{
+.box input[type = "text"],.box input[type = "password"],.box input[type = "email"]{
 
   border:0;
 
@@ -107,5 +107,26 @@ body{
 .box input[type = "submit"]:hover{
 
   background: #2ecc71;
+
+}
+
+.box p{
+
+  color: red;
+
+  text-transform: uppercase;
+
+  font-weight: 500;
+
+}
+
+
+.box a{
+
+  color: white;
+
+  text-transform: uppercase;
+
+  font-weight: 200;
 
 }

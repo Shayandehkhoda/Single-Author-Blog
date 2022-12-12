@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404, redirect, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post, Category
 from django.db.models import F
 from django.core.paginator import Paginator
@@ -15,20 +15,24 @@ def home(request, pnum=1):
 
 
 def detail(request, slug):
-
+    post = get_object_or_404(
+                Post.objects.select_related('author',), slug=slug, is_published=True
+                )
+    #Comment Post method
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
-            form.save()
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.email = request.user.email if request.user.is_authenticated else comment.email
+            comment.name = request.user.get_full_name() if request.user.is_authenticated else comment.name
+            comment.save()
             messages.success(request, 'Comment added, will be approved soon.')
         else:
             messages.error(request, 'Please fill the form correctly.')
         return redirect('blog:detail', slug=slug)
 
     #Page view count
-    post = get_object_or_404(
-                Post.objects.select_related('author',), slug=slug, is_published=True
-                )
     post.counted_views = F('counted_views') + 1
     post.save()
     post.refresh_from_db()
@@ -66,7 +70,8 @@ def newsletter(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Subscribed successfully.')
-    return HttpResponseRedirect('/')
+    return redirect(request.META.get('HTTP_REFERER'))
+
 
 def about(request):
     return render(request, 'blog/about.html')

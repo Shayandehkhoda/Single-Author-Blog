@@ -13,6 +13,7 @@ class Post(models.Model):
     category = models.ManyToManyField('Category', related_name='posts')
     counted_views = models.PositiveIntegerField(default=0)
     is_published = models.BooleanField(default=False)
+    special = models.BooleanField(default=False)
     published_date = models.DateTimeField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
