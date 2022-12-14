@@ -14,10 +14,7 @@ My second django project.<br>
 - View count
 <br>
 <br>
-<br>
 
-
-## instruction <hr>
 ##  Installation
 First **clone** or **download** this project.
 ```sh
