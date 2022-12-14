@@ -2,7 +2,7 @@ from django.db import models
 from accounts.models import User
 from django.utils.html import format_html
 from ckeditor.fields import RichTextField
-
+from datetime import datetime
 
 class Post(models.Model):
     title = models.CharField(max_length=255)
@@ -14,7 +14,7 @@ class Post(models.Model):
     counted_views = models.PositiveIntegerField(default=0)
     is_published = models.BooleanField(default=False)
     special = models.BooleanField(default=False)
-    published_date = models.DateTimeField(null=True)
+    published_date = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -52,6 +52,14 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+    
+    def save(self, *args, **kwargs):
+        if self.is_published:
+            self.published_date = datetime.today()
+        else:
+            self.published_date = None
+        super(Post, self).save(*args, **kwargs)
+            
 
     class Meta:
         ordering = ('-published_date',)

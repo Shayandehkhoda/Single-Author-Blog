@@ -1,6 +1,6 @@
 # Single-Author-Blog
-Second django project.<br>
-Will be completed.<br>
+My second django project.<br>
+**Will have updates.<br>**
 <br>
 - Function based views<br>
 - Template from colorlib<br>
@@ -11,9 +11,26 @@ Will be completed.<br>
 - About Section
 - Captcha
 - Special posts for logged in users
+- View count
 <br>
 <br>
 <br>
 
 
 ## instruction <hr>
+##  Installation
+First **clone** or **download** this project.
+```sh
+$ git clone https://github.com/Shayandehkhoda/Single-Author-Blog.git
+```
+
+You need to create .env file in the project root file with default values.
+```sh
+SECRET_KEY = default
+```
+
+Install requirements.
+```sh
+pip install -r requirements.txt
+```
+Then deal with **migrations**.
